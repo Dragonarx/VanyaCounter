@@ -274,10 +274,31 @@ namespace VanyaCounter
                     Clipboard.SetText(listBoxPlayers.SelectedItem.ToString());
                 }
             }
+            else if (e.KeyCode == Keys.Delete && listBoxPlayers.SelectedItem != null)
+            {
+                var selectedLine = listBoxPlayers.SelectedItem.ToString();
+                var name = selectedLine.Split('—')[0].Replace("Игрок:", "").Trim();
+
+                var confirm = MessageBox.Show($"Вы действительно хотите удалить игрока '{name}'?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (confirm != DialogResult.Yes)
+                    return;
+
+                var lines = File.ReadAllLines(dataFilePath).ToList();
+                lines.RemoveAll(line => line.StartsWith(name + ";"));
+                File.WriteAllLines(dataFilePath, lines);
+                LoadPlayerList();
+            }
         }
 
         private void listBoxCurrentGame_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                if (listBoxPlayers.SelectedItem != null)
+                {
+                    Clipboard.SetText(listBoxCurrentGame.SelectedItem.ToString());
+                }
+            }
             if (e.KeyCode == Keys.Delete && listBoxCurrentGame.SelectedItem != null)
             {
                 var result = MessageBox.Show("Убрать игрока из текущей игры?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
