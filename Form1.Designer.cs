@@ -259,9 +259,9 @@
             label6.AutoSize = true;
             label6.Location = new Point(279, 132);
             label6.Name = "label6";
-            label6.Size = new Size(190, 15);
+            label6.Size = new Size(139, 15);
             label6.TabIndex = 10;
-            label6.Text = "Двойной клик — Переименовать";
+            label6.Text = "Enter — Переименовать";
             // 
             // label5
             // 
