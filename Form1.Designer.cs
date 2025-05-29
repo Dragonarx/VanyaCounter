@@ -197,6 +197,7 @@
             listBoxCurrentGame.Name = "listBoxCurrentGame";
             listBoxCurrentGame.Size = new Size(480, 274);
             listBoxCurrentGame.TabIndex = 2;
+            listBoxCurrentGame.KeyDown += listBoxCurrentGame_KeyDown;
             // 
             // buttonAddToCurrentGame
             // 

@@ -275,5 +275,17 @@ namespace VanyaCounter
                 }
             }
         }
+
+        private void listBoxCurrentGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete && listBoxCurrentGame.SelectedItem != null)
+            {
+                var result = MessageBox.Show("Убрать игрока из текущей игры?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    listBoxCurrentGame.Items.Remove(listBoxCurrentGame.SelectedItem);
+                }
+            }
+        }
     }
 }
