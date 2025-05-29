@@ -129,18 +129,19 @@ namespace VanyaCounter
 
         private void buttonResetGames_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(dataFilePath))
+            var result = MessageBox.Show("Вы действительно хотите обнулить игры?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
                 return;
 
-            var lines = File.ReadAllLines(dataFilePath)
-                .Where(line => !string.IsNullOrWhiteSpace(line) && line.Contains(';'))
-                .Select(line =>
+            var lines = File.ReadAllLines(dataFilePath).ToList();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var parts = lines[i].Split(';');
+                if (parts.Length == 2)
                 {
-                    var parts = line.Split(';');
-                    string name = parts[0].Trim();
-                    return $"{name};0";
-                })
-                .ToList();
+                    lines[i] = $"{parts[0]};0";
+                }
+            }
 
             File.WriteAllLines(dataFilePath, lines);
             LoadPlayerList();
@@ -216,7 +217,6 @@ namespace VanyaCounter
                 .Distinct()
                 .ToList();
 
-            // Фильтрация и сортировка по релевантности
             var sorted = players
                 .OrderBy(p =>
                 {
@@ -225,13 +225,12 @@ namespace VanyaCounter
                     if (lower.Contains(input)) return 1;
                     return 2;
                 })
-                .ThenBy(p => p) // Алфавитный порядок внутри группы
+                .ThenBy(p => p)
                 .ToList();
 
             comboBoxSearchPlayers.Items.Clear();
             comboBoxSearchPlayers.Items.AddRange(sorted.ToArray());
 
-            // Для корректной работы SuggestAppend
             comboBoxSearchPlayers.SelectionStart = comboBoxSearchPlayers.Text.Length;
         }
 
