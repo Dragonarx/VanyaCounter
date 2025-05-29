@@ -92,16 +92,19 @@ namespace VanyaCounter
         {
             if (listBoxPlayers.SelectedIndex == -1)
             {
-                MessageBox.Show("Выберите игрока для удаления.");
+                MessageBox.Show("Выберите игрока из списка.");
                 return;
             }
 
             var selectedLine = listBoxPlayers.SelectedItem.ToString();
             var name = selectedLine.Split('—')[0].Replace("Игрок:", "").Trim();
 
-            var lines = File.ReadAllLines(dataFilePath).ToList();
-            lines = lines.Where(line => !line.StartsWith(name + ";")).ToList();
+            var confirm = MessageBox.Show($"Вы действительно хотите удалить игрока '{name}'?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm != DialogResult.Yes)
+                return;
 
+            var lines = File.ReadAllLines(dataFilePath).ToList();
+            lines.RemoveAll(line => line.StartsWith(name + ";"));
             File.WriteAllLines(dataFilePath, lines);
             LoadPlayerList();
         }
@@ -260,6 +263,17 @@ namespace VanyaCounter
 
             File.WriteAllLines(dataFilePath, lines);
             LoadPlayerList();
+        }
+
+        private void listBoxPlayers_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                if (listBoxPlayers.SelectedItem != null)
+                {
+                    Clipboard.SetText(listBoxPlayers.SelectedItem.ToString());
+                }
+            }
         }
     }
 }

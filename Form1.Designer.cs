@@ -57,6 +57,7 @@
             listBoxPlayers.Name = "listBoxPlayers";
             listBoxPlayers.Size = new Size(270, 304);
             listBoxPlayers.TabIndex = 0;
+            listBoxPlayers.KeyDown += listBoxPlayers_KeyDown;
             // 
             // buttonAddPlayer
             // 
