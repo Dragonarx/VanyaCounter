@@ -35,14 +35,19 @@
             buttonResetGames = new Button();
             tabControl1 = new TabControl();
             tabPageMain = new TabPage();
+            panel5 = new Panel();
             label7 = new Label();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             tabPageCurrentGame = new TabPage();
-            buttonRejectGame = new Button();
-            buttonAcceptGame = new Button();
+            panel4 = new Panel();
             listBoxCurrentGame = new ListBox();
+            panel3 = new Panel();
+            buttonAcceptGame = new Button();
+            panel2 = new Panel();
+            buttonRejectGame = new Button();
+            panel1 = new Panel();
             buttonAddToCurrentGame = new Button();
             comboBoxSearchPlayers = new ComboBox();
             tabDonations = new TabPage();
@@ -54,26 +59,33 @@
             listBoxDonators = new ListBox();
             tabControl1.SuspendLayout();
             tabPageMain.SuspendLayout();
+            panel5.SuspendLayout();
             tabPageCurrentGame.SuspendLayout();
+            panel4.SuspendLayout();
+            panel3.SuspendLayout();
+            panel2.SuspendLayout();
+            panel1.SuspendLayout();
             tabDonations.SuspendLayout();
             SuspendLayout();
             // 
             // listBoxPlayers
             // 
+            listBoxPlayers.Dock = DockStyle.Left;
             listBoxPlayers.FormattingEnabled = true;
             listBoxPlayers.ItemHeight = 15;
-            listBoxPlayers.Location = new Point(5, 6);
+            listBoxPlayers.Location = new Point(3, 3);
+            listBoxPlayers.MaximumSize = new Size(270, 600);
             listBoxPlayers.Name = "listBoxPlayers";
-            listBoxPlayers.Size = new Size(270, 304);
+            listBoxPlayers.Size = new Size(270, 386);
             listBoxPlayers.TabIndex = 0;
             listBoxPlayers.KeyDown += listBoxPlayers_KeyDown;
             listBoxPlayers.MouseDoubleClick += listBoxPlayers_MouseDoubleClick;
             // 
             // buttonAddPlayer
             // 
-            buttonAddPlayer.Location = new Point(281, 6);
+            buttonAddPlayer.Location = new Point(276, 6);
             buttonAddPlayer.Name = "buttonAddPlayer";
-            buttonAddPlayer.Size = new Size(205, 40);
+            buttonAddPlayer.Size = new Size(225, 40);
             buttonAddPlayer.TabIndex = 1;
             buttonAddPlayer.Text = "Добавить игрока";
             buttonAddPlayer.UseVisualStyleBackColor = true;
@@ -81,17 +93,19 @@
             // 
             // textBoxNewPlayer
             // 
-            textBoxNewPlayer.Location = new Point(281, 52);
+            textBoxNewPlayer.Location = new Point(276, 52);
             textBoxNewPlayer.Name = "textBoxNewPlayer";
             textBoxNewPlayer.PlaceholderText = "Введите имя игрока для добавления";
-            textBoxNewPlayer.Size = new Size(205, 23);
+            textBoxNewPlayer.Size = new Size(225, 23);
             textBoxNewPlayer.TabIndex = 2;
             // 
             // buttonReset
             // 
-            buttonReset.Location = new Point(3, 316);
+            buttonReset.Dock = DockStyle.Bottom;
+            buttonReset.Location = new Point(3, 13);
+            buttonReset.MaximumSize = new Size(225, 23);
             buttonReset.Name = "buttonReset";
-            buttonReset.Size = new Size(270, 23);
+            buttonReset.Size = new Size(222, 23);
             buttonReset.TabIndex = 3;
             buttonReset.Text = "Отсортировать по количеству игр";
             buttonReset.UseVisualStyleBackColor = true;
@@ -99,9 +113,11 @@
             // 
             // buttonResetGames
             // 
-            buttonResetGames.Location = new Point(3, 345);
+            buttonResetGames.Dock = DockStyle.Bottom;
+            buttonResetGames.Location = new Point(3, 36);
+            buttonResetGames.MaximumSize = new Size(225, 23);
             buttonResetGames.Name = "buttonResetGames";
-            buttonResetGames.Size = new Size(270, 23);
+            buttonResetGames.Size = new Size(222, 23);
             buttonResetGames.TabIndex = 6;
             buttonResetGames.Text = "Обнулить игры";
             buttonResetGames.UseVisualStyleBackColor = true;
@@ -112,35 +128,46 @@
             tabControl1.Controls.Add(tabPageMain);
             tabControl1.Controls.Add(tabPageCurrentGame);
             tabControl1.Controls.Add(tabDonations);
-            tabControl1.Location = new Point(8, 9);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(500, 408);
+            tabControl1.Size = new Size(512, 420);
             tabControl1.TabIndex = 7;
             // 
             // tabPageMain
             // 
+            tabPageMain.Controls.Add(panel5);
             tabPageMain.Controls.Add(label7);
             tabPageMain.Controls.Add(label3);
             tabPageMain.Controls.Add(label2);
             tabPageMain.Controls.Add(label1);
             tabPageMain.Controls.Add(buttonAddPlayer);
-            tabPageMain.Controls.Add(buttonResetGames);
             tabPageMain.Controls.Add(listBoxPlayers);
             tabPageMain.Controls.Add(textBoxNewPlayer);
-            tabPageMain.Controls.Add(buttonReset);
             tabPageMain.Location = new Point(4, 24);
             tabPageMain.Name = "tabPageMain";
             tabPageMain.Padding = new Padding(3);
-            tabPageMain.Size = new Size(492, 380);
+            tabPageMain.Size = new Size(504, 392);
             tabPageMain.TabIndex = 0;
             tabPageMain.Text = "Основа";
             tabPageMain.UseVisualStyleBackColor = true;
             // 
+            // panel5
+            // 
+            panel5.Controls.Add(buttonReset);
+            panel5.Controls.Add(buttonResetGames);
+            panel5.Dock = DockStyle.Bottom;
+            panel5.Location = new Point(273, 325);
+            panel5.Name = "panel5";
+            panel5.Padding = new Padding(3, 0, 3, 5);
+            panel5.Size = new Size(228, 64);
+            panel5.TabIndex = 12;
+            // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(281, 123);
+            label7.Location = new Point(276, 123);
             label7.Name = "label7";
             label7.Size = new Size(188, 15);
             label7.TabIndex = 11;
@@ -149,7 +176,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(281, 108);
+            label3.Location = new Point(276, 108);
             label3.Name = "label3";
             label3.Size = new Size(119, 15);
             label3.TabIndex = 10;
@@ -158,7 +185,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(281, 93);
+            label2.Location = new Point(276, 93);
             label2.Name = "label2";
             label2.Size = new Size(94, 15);
             label2.TabIndex = 9;
@@ -167,7 +194,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(281, 78);
+            label1.Location = new Point(276, 78);
             label1.Name = "label1";
             label1.Size = new Size(161, 15);
             label1.TabIndex = 8;
@@ -175,54 +202,101 @@
             // 
             // tabPageCurrentGame
             // 
-            tabPageCurrentGame.Controls.Add(buttonRejectGame);
-            tabPageCurrentGame.Controls.Add(buttonAcceptGame);
-            tabPageCurrentGame.Controls.Add(listBoxCurrentGame);
-            tabPageCurrentGame.Controls.Add(buttonAddToCurrentGame);
-            tabPageCurrentGame.Controls.Add(comboBoxSearchPlayers);
+            tabPageCurrentGame.Controls.Add(panel4);
+            tabPageCurrentGame.Controls.Add(panel3);
+            tabPageCurrentGame.Controls.Add(panel2);
+            tabPageCurrentGame.Controls.Add(panel1);
             tabPageCurrentGame.Location = new Point(4, 24);
             tabPageCurrentGame.Name = "tabPageCurrentGame";
             tabPageCurrentGame.Padding = new Padding(3);
-            tabPageCurrentGame.Size = new Size(492, 380);
+            tabPageCurrentGame.Size = new Size(504, 392);
             tabPageCurrentGame.TabIndex = 1;
             tabPageCurrentGame.Text = "Текущая игра";
             tabPageCurrentGame.UseVisualStyleBackColor = true;
             // 
-            // buttonRejectGame
+            // panel4
             // 
-            buttonRejectGame.Location = new Point(6, 344);
-            buttonRejectGame.Name = "buttonRejectGame";
-            buttonRejectGame.Size = new Size(480, 23);
-            buttonRejectGame.TabIndex = 4;
-            buttonRejectGame.Text = "Отклонить игру";
-            buttonRejectGame.UseVisualStyleBackColor = true;
-            buttonRejectGame.Click += buttonRejectGame_Click;
+            panel4.Controls.Add(listBoxCurrentGame);
+            panel4.Dock = DockStyle.Fill;
+            panel4.Location = new Point(3, 31);
+            panel4.MaximumSize = new Size(498, 600);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(498, 294);
+            panel4.TabIndex = 10;
+            // 
+            // listBoxCurrentGame
+            // 
+            listBoxCurrentGame.Dock = DockStyle.Fill;
+            listBoxCurrentGame.FormattingEnabled = true;
+            listBoxCurrentGame.ItemHeight = 15;
+            listBoxCurrentGame.Location = new Point(0, 0);
+            listBoxCurrentGame.MaximumSize = new Size(498, 600);
+            listBoxCurrentGame.Name = "listBoxCurrentGame";
+            listBoxCurrentGame.Size = new Size(498, 294);
+            listBoxCurrentGame.TabIndex = 2;
+            listBoxCurrentGame.KeyDown += listBoxCurrentGame_KeyDown;
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(buttonAcceptGame);
+            panel3.Dock = DockStyle.Bottom;
+            panel3.Location = new Point(3, 325);
+            panel3.MaximumSize = new Size(0, 35);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(498, 35);
+            panel3.TabIndex = 9;
             // 
             // buttonAcceptGame
             // 
-            buttonAcceptGame.Location = new Point(6, 315);
+            buttonAcceptGame.Dock = DockStyle.Bottom;
+            buttonAcceptGame.Location = new Point(0, 12);
+            buttonAcceptGame.MaximumSize = new Size(498, 23);
             buttonAcceptGame.Name = "buttonAcceptGame";
-            buttonAcceptGame.Size = new Size(480, 23);
-            buttonAcceptGame.TabIndex = 3;
+            buttonAcceptGame.Size = new Size(498, 23);
+            buttonAcceptGame.TabIndex = 4;
             buttonAcceptGame.Text = "Принять игру";
             buttonAcceptGame.UseVisualStyleBackColor = true;
             buttonAcceptGame.Click += buttonAcceptGame_Click;
             // 
-            // listBoxCurrentGame
+            // panel2
             // 
-            listBoxCurrentGame.FormattingEnabled = true;
-            listBoxCurrentGame.ItemHeight = 15;
-            listBoxCurrentGame.Location = new Point(6, 35);
-            listBoxCurrentGame.Name = "listBoxCurrentGame";
-            listBoxCurrentGame.Size = new Size(480, 274);
-            listBoxCurrentGame.TabIndex = 2;
-            listBoxCurrentGame.KeyDown += listBoxCurrentGame_KeyDown;
+            panel2.Controls.Add(buttonRejectGame);
+            panel2.Dock = DockStyle.Bottom;
+            panel2.Location = new Point(3, 360);
+            panel2.MaximumSize = new Size(0, 35);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(498, 29);
+            panel2.TabIndex = 8;
+            // 
+            // buttonRejectGame
+            // 
+            buttonRejectGame.Dock = DockStyle.Bottom;
+            buttonRejectGame.Location = new Point(0, 6);
+            buttonRejectGame.MaximumSize = new Size(498, 23);
+            buttonRejectGame.Name = "buttonRejectGame";
+            buttonRejectGame.Size = new Size(498, 23);
+            buttonRejectGame.TabIndex = 3;
+            buttonRejectGame.Text = "Отклонить игру";
+            buttonRejectGame.UseVisualStyleBackColor = true;
+            buttonRejectGame.Click += buttonRejectGame_Click;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(buttonAddToCurrentGame);
+            panel1.Controls.Add(comboBoxSearchPlayers);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(3, 3);
+            panel1.Margin = new Padding(0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(498, 28);
+            panel1.TabIndex = 7;
             // 
             // buttonAddToCurrentGame
             // 
-            buttonAddToCurrentGame.Location = new Point(311, 7);
+            buttonAddToCurrentGame.Location = new Point(300, 3);
+            buttonAddToCurrentGame.MaximumSize = new Size(200, 23);
             buttonAddToCurrentGame.Name = "buttonAddToCurrentGame";
-            buttonAddToCurrentGame.Size = new Size(175, 23);
+            buttonAddToCurrentGame.Size = new Size(193, 23);
             buttonAddToCurrentGame.TabIndex = 1;
             buttonAddToCurrentGame.Text = "Добавить игрока";
             buttonAddToCurrentGame.UseVisualStyleBackColor = true;
@@ -233,7 +307,8 @@
             comboBoxSearchPlayers.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             comboBoxSearchPlayers.AutoCompleteSource = AutoCompleteSource.RecentlyUsedList;
             comboBoxSearchPlayers.FormattingEnabled = true;
-            comboBoxSearchPlayers.Location = new Point(6, 7);
+            comboBoxSearchPlayers.Location = new Point(0, 3);
+            comboBoxSearchPlayers.MaximumSize = new Size(299, 0);
             comboBoxSearchPlayers.Name = "comboBoxSearchPlayers";
             comboBoxSearchPlayers.Size = new Size(299, 23);
             comboBoxSearchPlayers.TabIndex = 0;
@@ -249,7 +324,7 @@
             tabDonations.Controls.Add(listBoxDonators);
             tabDonations.Location = new Point(4, 24);
             tabDonations.Name = "tabDonations";
-            tabDonations.Size = new Size(492, 380);
+            tabDonations.Size = new Size(504, 392);
             tabDonations.TabIndex = 2;
             tabDonations.Text = "Топ донатеры";
             tabDonations.UseVisualStyleBackColor = true;
@@ -302,11 +377,13 @@
             // listBoxDonators
             // 
             listBoxDonators.AllowDrop = true;
+            listBoxDonators.Dock = DockStyle.Left;
             listBoxDonators.FormattingEnabled = true;
             listBoxDonators.ItemHeight = 15;
-            listBoxDonators.Location = new Point(3, 3);
+            listBoxDonators.Location = new Point(0, 0);
+            listBoxDonators.MaximumSize = new Size(270, 600);
             listBoxDonators.Name = "listBoxDonators";
-            listBoxDonators.Size = new Size(270, 364);
+            listBoxDonators.Size = new Size(270, 392);
             listBoxDonators.TabIndex = 0;
             listBoxDonators.DragDrop += listBoxDonators_DragDrop;
             listBoxDonators.DragOver += listBoxDonators_DragOver;
@@ -319,7 +396,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(512, 420);
             Controls.Add(tabControl1);
-            MaximumSize = new Size(528, 459);
+            MaximumSize = new Size(528, 600);
             MinimumSize = new Size(528, 459);
             Name = "Form1";
             Text = "VanyaCounter";
@@ -327,7 +404,12 @@
             tabControl1.ResumeLayout(false);
             tabPageMain.ResumeLayout(false);
             tabPageMain.PerformLayout();
+            panel5.ResumeLayout(false);
             tabPageCurrentGame.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             tabDonations.ResumeLayout(false);
             tabDonations.PerformLayout();
             ResumeLayout(false);
@@ -345,7 +427,6 @@
         private TabPage tabPageCurrentGame;
         private ComboBox comboBoxSearchPlayers;
         private Button buttonRejectGame;
-        private Button buttonAcceptGame;
         private ListBox listBoxCurrentGame;
         private Button buttonAddToCurrentGame;
         private Label label3;
@@ -359,5 +440,11 @@
         private Label label5;
         private Label label6;
         private Label label7;
+        private Panel panel1;
+        private Button buttonAcceptGame;
+        private Panel panel4;
+        private Panel panel3;
+        private Panel panel2;
+        private Panel panel5;
     }
 }

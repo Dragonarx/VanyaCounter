@@ -75,7 +75,7 @@ namespace VanyaCounter
                 .OrderByDescending(p => p.Games)
                 .ThenBy(p => p.DonatorIndex == -1 ? int.MaxValue : p.DonatorIndex)  // донатеры идут раньше
                 .ThenBy(p => p.Name)  // остальные по алфавиту
-                .Select(p => $"Игрок: {p.Name} — Игр: {p.Games}")
+                .Select(p => $"{p.Name} — Игр: {p.Games}")
                 .ToArray();
 
             listBoxPlayers.Items.Clear();
@@ -165,7 +165,21 @@ namespace VanyaCounter
             if (string.IsNullOrEmpty(player)) return;
 
             if (!listBoxCurrentGame.Items.Contains(player))
+            {
                 listBoxCurrentGame.Items.Add(player);
+            }
+
+            // Добавление в список игроков, если его там нет
+            var lines = File.ReadAllLines(dataFilePath).ToList();
+            bool playerExists = lines.Any(line => line.Split(';')[0] == player);
+            if (!playerExists)
+            {
+                lines.Add($"{player};0");
+                File.WriteAllLines(dataFilePath, lines);
+                LoadPlayerList();
+            }
+
+            comboBoxSearchPlayers.Text = "";
         }
 
         private void buttonAcceptGame_Click(object sender, EventArgs e)
@@ -329,24 +343,33 @@ namespace VanyaCounter
         }
         private void buttonAddDonator_Click(object sender, EventArgs e)
         {
-            var name = textBoxAddDonator.Text.Trim();
-            if (string.IsNullOrEmpty(name)) return;
+            string donator = textBoxAddDonator.Text.Trim();
+            if (string.IsNullOrEmpty(donator)) return;
 
-            var donators = File.Exists(donatorFilePath)
-                ? File.ReadAllLines(donatorFilePath).ToList()
-                : new List<string>();
-
-            if (donators.Contains(name))
+            if (!listBoxDonators.Items.Contains(donator))
             {
-                MessageBox.Show("Этот донатер уже добавлен.");
-                return;
+                listBoxDonators.Items.Add(donator);
             }
 
-            donators.Add(name);
-            File.WriteAllLines(donatorFilePath, donators);
-            textBoxAddDonator.Clear();
-            LoadDonatorList();
-            LoadPlayerList(); // пересортировка игроков
+            // Добавление в список донатеров
+            var donators = File.ReadAllLines(donatorFilePath).ToList();
+            if (!donators.Contains(donator))
+            {
+                donators.Add(donator);
+                File.WriteAllLines(donatorFilePath, donators);
+                LoadDonatorList();
+            }
+
+            // Также добавляем в список игроков, если отсутствует
+            var lines = File.ReadAllLines(dataFilePath).ToList();
+            if (!lines.Any(line => line.Split(';')[0] == donator))
+            {
+                lines.Add($"{donator};0");
+                File.WriteAllLines(dataFilePath, lines);
+                LoadPlayerList();
+            }
+
+            textBoxAddDonator.Text = "";
         }
 
         private void listBoxDonators_KeyDown(object sender, KeyEventArgs e)
