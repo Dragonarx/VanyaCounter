@@ -45,6 +45,46 @@ namespace VanyaCounter
             }
         }
 
+        private void RenamePlayerEverywhere(string oldName, string newName)
+        {
+            // Обновляем основной файл игроков
+            var lines = File.ReadAllLines(dataFilePath).ToList();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var parts = lines[i].Split(';');
+                if (parts[0] == oldName)
+                {
+                    lines[i] = $"{newName};{parts[1]}";
+                    break;
+                }
+            }
+            File.WriteAllLines(dataFilePath, lines);
+            LoadPlayerList();
+
+            // Обновляем донатеров
+            var donators = File.ReadAllLines(donatorFilePath).ToList();
+            for (int i = 0; i < donators.Count; i++)
+            {
+                if (donators[i] == oldName)
+                {
+                    donators[i] = newName;
+                    break;
+                }
+            }
+            File.WriteAllLines(donatorFilePath, donators);
+            LoadDonatorList();
+
+            // Обновляем текущую игру
+            for (int i = 0; i < listBoxCurrentGame.Items.Count; i++)
+            {
+                if (listBoxCurrentGame.Items[i].ToString() == oldName)
+                {
+                    listBoxCurrentGame.Items[i] = newName;
+                }
+            }
+            LoadPlayerList();
+        }
+
         private void LoadPlayerList()
         {
             if (!File.Exists(dataFilePath))
@@ -392,24 +432,13 @@ namespace VanyaCounter
             }
             if (e.KeyCode == Keys.Enter && listBoxDonators.SelectedIndex != -1)
             {
-                var oldName = listBoxDonators.SelectedItem.ToString();
-                string newName = Prompt.ShowDialog("Новое имя донатера:", "Переименование", oldName);
+                string oldName = listBoxDonators.SelectedItem.ToString();
+                string newName = Microsoft.VisualBasic.Interaction.InputBox("Новое имя донатера:", "Переименование", oldName);
 
                 if (!string.IsNullOrWhiteSpace(newName) && newName != oldName)
                 {
-                    var donators = File.ReadAllLines(donatorFilePath).ToList();
-                    int i = donators.IndexOf(oldName);
-                    if (i >= 0)
-                    {
-                        donators[i] = newName;
-                        File.WriteAllLines(donatorFilePath, donators);
-                        LoadDonatorList();
-                        LoadPlayerList(); // обновить, если имя есть в обоих
-                    }
+                    RenamePlayerEverywhere(oldName, newName);
                 }
-
-                e.Handled = true;
-                e.SuppressKeyPress = true;
             }
         }
 
@@ -450,24 +479,14 @@ namespace VanyaCounter
             int index = listBoxPlayers.IndexFromPoint(e.Location);
             if (index != ListBox.NoMatches)
             {
-                var selectedLine = listBoxPlayers.Items[index].ToString();
-                var oldName = selectedLine.Split('—')[0].Replace("Игрок:", "").Trim();
+                string selectedLine = listBoxPlayers.Items[index].ToString();
+                string oldName = selectedLine.Split('—')[0].Replace("Игрок:", "").Trim();
 
-                string newName = Prompt.ShowDialog("Новое имя игрока:", "Переименование", oldName);
+                string newName = Microsoft.VisualBasic.Interaction.InputBox("Новое имя игрока:", "Переименование", oldName);
+
                 if (!string.IsNullOrWhiteSpace(newName) && newName != oldName)
                 {
-                    var lines = File.ReadAllLines(dataFilePath).ToList();
-                    for (int i = 0; i < lines.Count; i++)
-                    {
-                        var parts = lines[i].Split(';');
-                        if (parts[0] == oldName)
-                        {
-                            lines[i] = $"{newName};{parts[1]}";
-                            break;
-                        }
-                    }
-                    File.WriteAllLines(dataFilePath, lines);
-                    LoadPlayerList();
+                    RenamePlayerEverywhere(oldName, newName);
                 }
             }
         }
