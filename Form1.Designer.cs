@@ -71,6 +71,7 @@
             // listBoxPlayers
             // 
             listBoxPlayers.Dock = DockStyle.Left;
+            listBoxPlayers.DrawMode = DrawMode.OwnerDrawFixed;
             listBoxPlayers.FormattingEnabled = true;
             listBoxPlayers.ItemHeight = 15;
             listBoxPlayers.Location = new Point(3, 3);
@@ -78,6 +79,7 @@
             listBoxPlayers.Name = "listBoxPlayers";
             listBoxPlayers.Size = new Size(270, 386);
             listBoxPlayers.TabIndex = 0;
+            listBoxPlayers.DrawItem += listBoxPlayers_DrawItem;
             listBoxPlayers.KeyDown += listBoxPlayers_KeyDown;
             listBoxPlayers.MouseDoubleClick += listBoxPlayers_MouseDoubleClick;
             // 
@@ -169,9 +171,9 @@
             label7.AutoSize = true;
             label7.Location = new Point(276, 123);
             label7.Name = "label7";
-            label7.Size = new Size(188, 15);
+            label7.Size = new Size(220, 30);
             label7.TabIndex = 11;
-            label7.Text = "Двойной клик — переименовать";
+            label7.Text = "Двойной клик — посмотреть историю\r\n                                или переименовать";
             // 
             // label3
             // 
@@ -235,6 +237,7 @@
             listBoxCurrentGame.Size = new Size(498, 294);
             listBoxCurrentGame.TabIndex = 2;
             listBoxCurrentGame.KeyDown += listBoxCurrentGame_KeyDown;
+            listBoxCurrentGame.MouseDoubleClick += listBoxCurrentGame_MouseDoubleClick;
             // 
             // panel3
             // 

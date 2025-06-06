@@ -10,6 +10,7 @@ namespace VanyaCounter
     {
         private string dataFilePath = "players.txt";
         private string donatorFilePath = "donations.txt";
+        private string logFilePath = "gamesLog.txt";
         private int donatorDragIndex = -1;
 
         public Form1()
@@ -17,6 +18,27 @@ namespace VanyaCounter
             InitializeComponent();
             LoadPlayerList();
             LoadDonatorList();
+        }
+        private void ShowPlayerGameHistory(string playerName)
+        {
+            if (!File.Exists(logFilePath))
+            {
+                MessageBox.Show("История игр отсутствует.");
+                return;
+            }
+
+            var lines = File.ReadAllLines(logFilePath);
+            var participatedGames = lines.Where(line => line.Contains(playerName)).ToList();
+
+            if (participatedGames.Count == 0)
+            {
+                MessageBox.Show($"{playerName} не участвовал ни в одной игре.");
+            }
+            else
+            {
+                string message = string.Join(Environment.NewLine, participatedGames);
+                MessageBox.Show($"{playerName} участвовал в следующих играх:\n\n{message}", "История игр");
+            }
         }
         public static class Prompt
         {
@@ -167,22 +189,33 @@ namespace VanyaCounter
 
         private void buttonResetGames_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Вы действительно хотите обнулить игры?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result != DialogResult.Yes)
+            var result = MessageBox.Show("Вы действительно хотите обнулить игры?", "Подтверждение", MessageBoxButtons.YesNo);
+            if (result == DialogResult.No)
+                return;
+
+            if (!File.Exists(dataFilePath))
                 return;
 
             var lines = File.ReadAllLines(dataFilePath).ToList();
             for (int i = 0; i < lines.Count; i++)
             {
                 var parts = lines[i].Split(';');
-                if (parts.Length == 2)
+                if (parts.Length >= 2)
                 {
-                    lines[i] = $"{parts[0]};0";
+                    string name = parts[0];
+                    lines[i] = $"{name};0";
                 }
             }
 
             File.WriteAllLines(dataFilePath, lines);
             LoadPlayerList();
+
+            // Очищаем историю игр
+            string logFilePath = "gamesLog.txt";
+            if (File.Exists(logFilePath))
+            {
+                File.WriteAllText(logFilePath, string.Empty);
+            }
         }
 
         private void UpdatePlayerDropdown()
@@ -224,26 +257,45 @@ namespace VanyaCounter
 
         private void buttonAcceptGame_Click(object sender, EventArgs e)
         {
-            if (listBoxCurrentGame.Items.Count == 0) return;
-
-            var lines = File.ReadAllLines(dataFilePath).ToList();
-
-            for (int i = 0; i < lines.Count; i++)
+            if (listBoxCurrentGame.Items.Count == 0)
             {
-                var parts = lines[i].Split(';');
-                if (parts.Length != 2) continue;
-
-                string name = parts[0];
-                if (listBoxCurrentGame.Items.Contains(name) && int.TryParse(parts[1], out int games))
-                {
-                    lines[i] = $"{name};{games + 1}";
-                }
+                MessageBox.Show("Добавьте хотя бы одного игрока.");
+                return;
             }
 
+            var playersInGame = listBoxCurrentGame.Items.Cast<string>().ToList();
+
+            // 1. Обновление счётчиков
+            var lines = File.ReadAllLines(dataFilePath).ToList();
+            foreach (var player in playersInGame)
+            {
+                bool found = false;
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    var parts = lines[i].Split(';');
+                    if (parts[0] == player && int.TryParse(parts[1], out int games))
+                    {
+                        games++;
+                        lines[i] = $"{player};{games}";
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    lines.Add($"{player};1");
+                }
+            }
             File.WriteAllLines(dataFilePath, lines);
-            listBoxCurrentGame.Items.Clear();
             LoadPlayerList();
-            UpdatePlayerDropdown();
+
+            // 2. Добавление записи в gamesLog.txt
+            int gameNumber = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath).Length + 1 : 1;
+            string logEntry = $"Игра {gameNumber}: {string.Join(", ", playersInGame)}";
+            File.AppendAllText(logFilePath, logEntry + Environment.NewLine);
+
+            listBoxCurrentGame.Items.Clear();
         }
 
         private void buttonRejectGame_Click(object sender, EventArgs e)
@@ -480,15 +532,58 @@ namespace VanyaCounter
             if (index != ListBox.NoMatches)
             {
                 string selectedLine = listBoxPlayers.Items[index].ToString();
-                string oldName = selectedLine.Split('—')[0].Replace("Игрок:", "").Trim();
+                string name = selectedLine.Split('—')[0].Replace("Игрок:", "").Trim();
 
-                string newName = Microsoft.VisualBasic.Interaction.InputBox("Новое имя игрока:", "Переименование", oldName);
+                var result = MessageBox.Show("Открыть историю игр игрока?", "Выбор действия", MessageBoxButtons.YesNoCancel);
 
-                if (!string.IsNullOrWhiteSpace(newName) && newName != oldName)
+                if (result == DialogResult.Yes)
                 {
-                    RenamePlayerEverywhere(oldName, newName);
+                    ShowPlayerGameHistory(name);
+                }
+                else if (result == DialogResult.No)
+                {
+                    string newName = Microsoft.VisualBasic.Interaction.InputBox("Новое имя игрока:", "Переименование", name);
+                    if (!string.IsNullOrWhiteSpace(newName) && newName != name)
+                    {
+                        RenamePlayerEverywhere(name, newName);
+                    }
                 }
             }
+        }
+
+        private void listBoxCurrentGame_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void listBoxPlayers_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0 || e.Index >= listBoxPlayers.Items.Count)
+                return;
+
+            string itemText = listBoxPlayers.Items[e.Index].ToString();
+            string playerName = itemText.Split('—')[0].Replace("Игрок:", "").Trim();
+
+            // Проверка: донатер ли это
+            bool isDonator = File.Exists(donatorFilePath) &&
+                             File.ReadAllLines(donatorFilePath).Any(d => d.Trim() == playerName);
+
+            // Определяем цвет текста
+            Color textColor = isDonator ? Color.Goldenrod : SystemColors.ControlText;
+
+            // Фон выделения
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                e.Graphics.FillRectangle(SystemBrushes.Highlight, e.Bounds);
+                textColor = isDonator ? Color.Yellow : SystemColors.HighlightText;
+            }
+            else
+            {
+                e.Graphics.FillRectangle(SystemBrushes.Window, e.Bounds);
+            }
+
+            // Отрисовка текста
+            TextRenderer.DrawText(e.Graphics, itemText, listBoxPlayers.Font, e.Bounds, textColor, TextFormatFlags.Left);
         }
     }
 }
