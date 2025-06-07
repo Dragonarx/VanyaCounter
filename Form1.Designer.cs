@@ -237,7 +237,6 @@
             listBoxCurrentGame.Size = new Size(498, 294);
             listBoxCurrentGame.TabIndex = 2;
             listBoxCurrentGame.KeyDown += listBoxCurrentGame_KeyDown;
-            listBoxCurrentGame.MouseDoubleClick += listBoxCurrentGame_MouseDoubleClick;
             // 
             // panel3
             // 
@@ -307,8 +306,6 @@
             // 
             // comboBoxSearchPlayers
             // 
-            comboBoxSearchPlayers.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            comboBoxSearchPlayers.AutoCompleteSource = AutoCompleteSource.RecentlyUsedList;
             comboBoxSearchPlayers.FormattingEnabled = true;
             comboBoxSearchPlayers.Location = new Point(0, 3);
             comboBoxSearchPlayers.MaximumSize = new Size(299, 0);

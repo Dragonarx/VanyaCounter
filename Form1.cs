@@ -534,7 +534,7 @@ namespace VanyaCounter
                 string selectedLine = listBoxPlayers.Items[index].ToString();
                 string name = selectedLine.Split('—')[0].Replace("Игрок:", "").Trim();
 
-                var result = MessageBox.Show("Открыть историю игр игрока?", "Выбор действия", MessageBoxButtons.YesNoCancel);
+                var result = MessageBox.Show("Да - открыть историю\nНет - переименовать", "Выбор действия", MessageBoxButtons.YesNoCancel);
 
                 if (result == DialogResult.Yes)
                 {
@@ -549,11 +549,6 @@ namespace VanyaCounter
                     }
                 }
             }
-        }
-
-        private void listBoxCurrentGame_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void listBoxPlayers_DrawItem(object sender, DrawItemEventArgs e)
